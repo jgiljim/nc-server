@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>momentum</id>
+    <name>AI Document Manager</name>
+    <summary>AI-assisted document intake, classification, and structured-field extraction.</summary>
+    <description><![CDATA[Bridges Nextcloud's filesystem events and per-user access model to the
+Momentum Document Manager backend (architecture.md § ⑨): listens for file create/write/delete/rename
+events, buffers them in a local sync-work ledger, mints short-lived identity tokens for the backend,
+serves file content back to the pipeline, and resolves per-user visibility.]]></description>
+    <version>0.1.0</version>
+    <licence>agpl</licence>
+    <author>Momentum</author>
+    <namespace>Momentum</namespace>
+    <category>files</category>
+    <bugs>https://github.com/momentum/doc-mgr/issues</bugs>
+    <dependencies>
+        <php min-version="8.1"/>
+        <nextcloud min-version="28" max-version="34"/>
+    </dependencies>
+    <background-jobs>
+        <job>OCA\Momentum\BackgroundJob\ReconciliationJob</job>
+        <job>OCA\Momentum\BackgroundJob\DrainJob</job>
+        <job>OCA\Momentum\BackgroundJob\StatusPollJob</job>
+        <job>OCA\Momentum\BackgroundJob\CleanupSweepJob</job>
+    </background-jobs>
+    <navigations>
+        <navigation>
+            <!--
+              This name is the app's *identity* in core's chrome, not just a
+              sidebar label: core renders it in `.app-menu__current-app-name`
+              (the brand text at the top left, once the app-switcher waffle is
+              hidden by appinfo/css/app-chrome.css) and in the page <title>.
+              "AI Document Manager" matches the product name the IONOS theme
+              header shows via src/brand/globalNavBrand.ts, so both paths agree
+              — frontend.md § Standalone chrome, M122.1.
+            -->
+            <name>AI Document Manager</name>
+            <route>momentum.page.index</route>
+            <icon>momentum.svg</icon>
+            <order>25</order>
+        </navigation>
+    </navigations>
+</info>

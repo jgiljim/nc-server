@@ -1,0 +1,37 @@
+{
+    "name": "momentum/glue-app",
+    "description": "Momentum Document Manager — NC Glue App (architecture.md § ⑨): filesystem-event listener, sync-work ledger, tenant mapper/token minter, access resolver, file-serving OCS endpoint. Nextcloud mode only.",
+    "license": "AGPL-3.0-or-later",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "psr/log": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "doctrine/dbal": "^3.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "OCA\\Momentum\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OCA\\Momentum\\Tests\\": "tests/unit/",
+            "OCP\\": "tests/stubs/OCP/",
+            "OCA\\Files\\": "tests/stubs/OCA/Files/",
+            "OCA\\Viewer\\": "tests/stubs/OCA/Viewer/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.1"
+        }
+    },
+    "scripts": {
+        "lint": "find lib tests/unit tests/stubs -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "test": "phpunit"
+    }
+}

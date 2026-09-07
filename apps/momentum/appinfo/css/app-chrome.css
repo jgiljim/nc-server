@@ -1,0 +1,49 @@
+/*
+ * glue-app/appinfo/css/app-chrome.css
+ *
+ * Presents this app as a standalone product inside Nextcloud (frontend.md §
+ * Standalone chrome). Added by PageController::index() via
+ * `Util::addStyle('momentum', 'app-chrome')`, so it is loaded ONLY on this
+ * app's own page routes — every other Nextcloud surface, the Files app
+ * included, keeps its full chrome.
+ *
+ * Lives under `appinfo/css/` in git and is relocated to the NC-expected
+ * `css/` directory at image build time (docker/Dockerfile.glue-app), for the
+ * same reason `appinfo/img/momentum.svg` does: a brand-new top-level path
+ * under `glue-app/` deterministically fails to COPY on this cluster's
+ * buildkitd (M21.10/M21.13's quirk).
+ *
+ * Selectors are core's, measured on a running Nextcloud 34 instance rather
+ * than guessed (`header#header` → `div.header-start` > `nav.app-menu` >
+ * `button.app-menu__waffle`; `div.header-end` > `div.unified-search-menu`).
+ * They are core chrome, not a public API — the live check in
+ * scripts/lib/nc-theme-overflow-check.mjs (--check=standalone-chrome) is what
+ * catches a rename, since nothing about a selector that stops matching fails
+ * loudly on its own: the element simply reappears.
+ *
+ * No colors, sizes or fonts here on purpose — this file only removes chrome.
+ * Anything visual belongs on NC's own custom properties (CLAUDE.md § Design
+ * tokens, enforced by `make glue-app-no-hardcoded-colors-test`).
+ */
+
+/* The 9-dot app switcher. */
+.app-menu__waffle {
+    display: none !important;
+}
+
+/* The unified-search field in the header's right-hand group. */
+.unified-search-menu {
+    display: none !important;
+}
+
+/*
+ * The current-app button stays visible — it is what renders the product name
+ * ("AI Document Manager", from appinfo/info.xml's <navigations> entry) at the
+ * top left, the way the mockup's brand bar does. It is only made
+ * non-interactive: clicking it opens the very app menu the waffle above was
+ * hidden to remove, so leaving it clickable would put the menu one click from
+ * the brand label instead of removing it.
+ */
+.app-menu__current-app {
+    pointer-events: none;
+}

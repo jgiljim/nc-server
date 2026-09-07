@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Momentum — mock host</title>
+    <!--
+      `host.ts` (imported by `main.ts`) sets `data-user`/`data-requesttoken` on
+      this <head> itself before the app boots — @nextcloud/auth's
+      getCurrentUser()/getRequestToken() read exactly those two attributes.
+      Nothing needs to be set here in markup.
+
+      No `#content`/`#header`/`#app-navigation` wrapper: `../templates/index.php`'s
+      own header comment explains why a Momentum template never emits those —
+      real Nextcloud's `layout.user.php` normally does, and this page doesn't
+      exist in the real one, so this <body> plays that part instead (see
+      the minimal shell CSS below).
+    -->
+    <!--
+      Nextcloud's CSS custom properties (CLAUDE.md § Design tokens) — normally
+      generated server-side by the NC shell, which this harness doesn't run.
+      See nc-theme.css's own header for what's in here and why (the full
+      inventory this was built against, and what's deliberately left out).
+      Loaded before the inline shell CSS below so its tokens are available to
+      that CSS's own `var(...)` uses.
+    -->
+    <link rel="stylesheet" href="./nc-theme.css" />
+    <style>
+      /*
+        This is the one page in the whole app allowed to hardcode colors/sizes
+        beyond nc-theme.css's own tokens (glue-app-no-hardcoded-colors-test
+        only scans glue-app/src/**, not mock/**) precisely because it is
+        standing in for the missing NC shell, not writing product UI.
+      */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-face);
+        font-size: var(--default-font-size);
+        color: var(--color-main-text);
+        background: var(--color-main-background);
+      }
+      #momentum-app {
+        height: 100vh;
+        display: flex;
+      }
+      .momentum-mock-banner {
+        position: fixed;
+        z-index: 10000;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 6px 12px;
+        font-size: 12px;
+        text-align: center;
+        background: #fff3cd;
+        color: #664d03;
+        border-top: 1px solid #ffe69c;
+      }
+      .momentum-mock-banner a {
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="momentum-app"></div>
+    <div class="momentum-mock-banner">
+      Mock backend — no real Doc-Mgr/Nextcloud instance. See glue-app/mock/README.md. —
+      <a href="/files.html">open the mock "All Files" view instead</a>
+    </div>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

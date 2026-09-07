@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Momentum — mock Files-app view</title>
+    <!--
+      Stands in for a real Nextcloud Files page: `../src/files-entry.ts`
+      (loaded unmodified by `files-main.ts`) only ever runs on a page core's
+      `LoadAdditionalScriptsListener.php` injects it into, which is always a
+      Files-app page, never `index.html`'s own app-shell page — see
+      README.md's "Two mock pages" section for why this is a second HTML
+      entry rather than a tab inside index.html.
+    -->
+    <!-- See index.html's own comment — same shared token file, same reason. -->
+    <link rel="stylesheet" href="./nc-theme.css" />
+    <style>
+      /* See index.html's own style block for why hardcoding page-shell CSS
+         here is fine — this page plays the same "missing NC shell" role. */
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-face);
+        font-size: var(--default-font-size);
+        color: var(--color-main-text);
+        background: var(--color-main-background);
+      }
+      #momentum-files-app {
+        display: flex;
+        height: 100vh;
+      }
+      #momentum-files-sidebar {
+        width: 260px;
+        flex: 0 0 auto;
+        border-right: 1px solid var(--color-border);
+        padding: 16px 8px;
+        overflow-y: auto;
+      }
+      .momentum-files-nav,
+      .momentum-files-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0 0 0 12px;
+      }
+      .momentum-files-nav {
+        padding-left: 0;
+      }
+      .momentum-files-nav a {
+        display: block;
+        padding: 8px 12px;
+        border-radius: var(--border-radius);
+        color: var(--color-main-text);
+        text-decoration: none;
+      }
+      .momentum-files-nav a:hover {
+        background: var(--color-background-hover);
+      }
+      .momentum-files-nav a.active {
+        background: var(--color-primary-element);
+        color: #fff;
+      }
+      #momentum-files-main {
+        flex: 1 1 auto;
+        padding: 24px;
+        overflow: auto;
+      }
+      .momentum-files-table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      .momentum-files-table th,
+      .momentum-files-table td {
+        text-align: left;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .momentum-files-table a {
+        color: var(--color-primary-element);
+      }
+      .momentum-files-empty {
+        height: 60vh;
+      }
+      .momentum-mock-banner {
+        position: fixed;
+        z-index: 10000;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 6px 12px;
+        font-size: 12px;
+        text-align: center;
+        background: #fff3cd;
+        color: #664d03;
+        border-top: 1px solid #ffe69c;
+      }
+      .momentum-mock-banner a {
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="momentum-files-app">
+      <nav id="momentum-files-sidebar"></nav>
+      <main id="momentum-files-main"></main>
+    </div>
+    <div class="momentum-mock-banner">
+      Mock Files-app view (see glue-app/mock/README.md) —
+      <a href="/index.html">open the Documents app instead</a>
+    </div>
+    <script type="module" src="./files-main.ts"></script>
+  </body>
+</html>

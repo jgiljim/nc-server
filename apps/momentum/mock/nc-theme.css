@@ -1,0 +1,149 @@
+/*
+ * Nextcloud CSS custom properties, hand-defined for this harness.
+ *
+ * On a real instance, Nextcloud's server (theming/lib/ThemingDefaults.php)
+ * generates a `<style>` block defining these from the admin's chosen colors.
+ * There is no npm-installable copy of that anywhere — confirmed by grepping
+ * every `.css` file @nextcloud/vue ships (`node_modules/@nextcloud/vue/dist`):
+ * none of them *define* a single `--color-*`/`--border-radius*`/etc. token,
+ * only *use* `var(--token)`, almost always with NO fallback value. Without
+ * this file, most of that CSS silently resolves to nothing — not "slightly
+ * off," but the totally white/unstyled page this file exists to fix.
+ *
+ * Scope: only the tokens actually referenced (with no fallback) by the
+ * compiled CSS of the ~19 @nextcloud/vue components this app imports
+ * (`grep -rhoP '@nextcloud/vue/components/\K\w+' src`, then grepped each
+ * component's own dist/assets/*.css for `var(--...)`). Two categories were
+ * deliberately excluded because they already have real fallbacks of their
+ * own, confirmed by reading the actual compiled CSS:
+ *   - `--dp-*` (the datepicker NcDateTimePicker wraps) — NcDateTimePicker's
+ *     own CSS sets a full `:root` block of `--dp-*` defaults scoped under
+ *     `.vue-date-time-picker__wrapper`.
+ *   - `--vs-*` (vue-select, behind NcSelect) — its defaults are already
+ *     `var(--color-*, ...)` expressions, so defining the `--color-*` tokens
+ *     below is sufficient; it needs nothing of its own.
+ * Also excluded: a handful of hashed-looking custom properties (e.g.
+ * `--d98ce684`) some component CSS references — these are Vue's own
+ * per-instance scoped `v-bind()` CSS variables, set inline by Vue itself at
+ * render time, never something a stylesheet is supposed to define.
+ *
+ * Values below approximate Nextcloud's actual default (unbranded) light
+ * theme as closely as reasonably knowable outside a running instance — good
+ * enough to make the harness look and lay out like Nextcloud for frontend
+ * work, but NOT a pixel-exact match to any specific real deployment's theme.
+ * If a real instance's exact values ever matter, read them from that
+ * instance's own generated stylesheet instead of trusting this file.
+ */
+:root {
+  /* --- Animation ----------------------------------------------------- */
+  --animation-quick: 100ms;
+  --animation-slow: 300ms;
+  --animation-duration: var(--animation-slow);
+
+  /* --- Layout sizing --------------------------------------------------- */
+  --default-clickable-area: 44px;
+  --clickable-area-large: 44px;
+  --clickable-area-small: 34px;
+  --default-grid-baseline: 4px;
+  --default-line-height: 1.5;
+  --header-height: 50px;
+  --app-navigation-max-width: 300px;
+  --body-height: 100%;
+  --body-container-margin: 0px;
+  --body-container-radius: 0px;
+  --icon-size: 20px;
+  --icon-height: 20px;
+  --counter-bubble-height: 16px;
+
+  /* --- Font -------------------------------------------------------------- */
+  --font-face:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --default-font-size: 15px;
+  --font-size-small: 13px;
+  --font-weight-default: 400;
+  --font-weight-element: 500;
+  --font-weight-heading: 600;
+
+  /* --- Border radius --------------------------------------------------- */
+  --border-radius: 8px;
+  --border-radius-element: 8px;
+  --border-radius-small: 4px;
+  --border-radius-large: 20px;
+  --border-radius-pill: 999px;
+  --border-width-input: 2px;
+  --border-width-input-focused: 2px;
+
+  /* --- Core colors ------------------------------------------------------- */
+  --color-main-background: #ffffff;
+  --color-main-background-blur: rgba(255, 255, 255, 0.8);
+  --color-main-text: #1e1e1e;
+  --color-text-maxcontrast: #6b6b6b;
+  --color-text-maxcontrast-default: #6b6b6b;
+  --color-text-maxcontrast-background-blur: #6b6b6b;
+  --color-text-error: #e9322d;
+
+  --color-background-dark: #ededed;
+  --color-background-hover: rgba(0, 0, 0, 0.05);
+  --color-border: #dbdbdb;
+  --color-border-dark: #929292;
+  --color-border-maxcontrast: #767676;
+  --color-box-shadow: rgba(0, 0, 0, 0.5);
+  --color-scrollbar: rgba(0, 0, 0, 0.3);
+  --open-background-color: rgba(0, 0, 0, 0.05);
+  --filter-background-blur: blur(25px);
+
+  /* Primary (brand) — #00679e is Nextcloud's own unbranded default blue. */
+  --color-primary-element: #00679e;
+  --color-primary-element-hover: #005585;
+  --color-primary-element-text: #ffffff;
+  --color-primary-element-light: #d0e2ea;
+  --color-primary-element-light-hover: #bcd6e2;
+  --color-primary-element-light-text: #00435f;
+
+  /* Status colors */
+  --color-error: #e9322d;
+  --color-error-hover: #c42a26;
+  --color-error-text: #e9322d;
+  --color-border-error: #e9322d;
+  --color-warning: #f0ad4e;
+  --color-warning-hover: #d1922f;
+  --color-warning-text: #664d03;
+  --color-success: #46ba61;
+  --color-success-hover: #37954d;
+  --color-success-text: #2d7a40;
+  --color-border-success: #46ba61;
+  --color-info: #00679e;
+  --color-info-text: #00679e;
+
+  /* --- Buttons ----------------------------------------------------------- */
+  --button-size: 34px;
+  --button-inner-size: 34px;
+  --button-padding: 11px;
+  --button-padding-default: 11px;
+  --button-radius: var(--border-radius-element);
+
+  /* --- Checkbox / radio / chip -------------------------------------------- */
+  --checkbox-radio-switch--border-radius: 4px;
+  --checkbox-radio-switch--border-radius-outer: 10px;
+  --chip-radius: var(--border-radius-pill);
+  --chip-size: 24px;
+
+  /* --- Inputs -------------------------------------------------------------- */
+  --input-border-color: var(--color-border);
+  --input-border-radius: var(--border-radius-element);
+  --input-label-font-size: var(--font-size-small);
+  --input-padding-start: 12px;
+  --input-padding-end: 12px;
+  --input-border-box-shadow: 0 0 0 2px rgba(0, 103, 158, 0.3);
+  --input-border-box-shadow-light: 0 0 0 2px rgba(0, 103, 158, 0.15);
+  --input-border-box-shadow-dark: 0 0 0 2px rgba(0, 103, 158, 0.5);
+
+  /* --- NcAppNavigation ----------------------------------------------------- */
+  --app-navigation-item-child-offset: var(--default-grid-baseline);
+
+  /* --- NcNoteCard ------------------------------------------------------------ */
+  --note-background: var(--color-background-hover);
+  --note-card-padding: 12px;
+  --note-card-icon-size: var(--icon-size);
+  --note-theme: var(--color-info);
+}
